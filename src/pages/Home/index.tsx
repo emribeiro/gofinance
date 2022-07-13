@@ -1,4 +1,5 @@
 import React from "react";
+import { Card } from "../../Components/Card";
 import { Container
        , Header
        , UserAvatar
@@ -24,6 +25,7 @@ export function Home(){
                     </UserInfo>
                     <Icon name="log-out"/>
                 </UserContainer>
+                <Card />
             </Header>
         </Container>
     )
