@@ -1,6 +1,7 @@
 import styled from "styled-components/native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import  Feather from "@expo/vector-icons/Feather"
+import { getStatusBarHeight } from "react-native-iphone-x-helper";
 
 export const Container = styled.View`
     flex: 1;
@@ -12,7 +13,6 @@ export const Header = styled.View`
     width: 100%;
     height: ${RFPercentage(42)}px;
     background-color: ${({theme}) => theme.colors.primary};
-    justify-content: center;
     align-items: center;
 `;
 
@@ -21,6 +21,7 @@ export const UserContainer = styled.View`
     justify-content: space-between;
     align-items: center;
     padding: 0 36px;
+    margin-top: ${getStatusBarHeight() + RFValue(18)}px;
 `;
 export const UserInfo = styled.View`
     width: 100%;
@@ -42,15 +43,22 @@ export const User = styled.View`
 export const UserGreeting = styled.Text`
     font-size: ${RFValue(18)}px;
     color: ${({theme}) => theme.colors.shape};
+    font-family: ${({theme}) => theme.fonts.regular};
 `;
 
 export const UserName = styled.Text`
     font-size: ${RFValue(18)}px;
     color: ${({theme}) => theme.colors.shape};
     font-weight: bold;
+    font-family: ${({theme}) => theme.fonts.bold};
 `;
 
 export const Icon = styled(Feather)`
     font-size: ${RFValue(24)}px;
     color: ${({theme}) => theme.colors.secondary};
+`;
+
+export const CardsContainer = styled.View`
+    flex-direction: row;
+    margin-top: ${RFValue(16)}px;
 `;

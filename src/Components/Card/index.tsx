@@ -9,17 +9,28 @@ import {
    , Footer
    , LastTransaction
 } from './styles'
+interface CardProps{
+    type: "income" | "outcome";
+    title: string;
+    amount: string;
+    lastTransaction: string;
+}
 
-export function Card(){
+const icon = {
+    "income" : "arrow-up-circle",
+    "outcome": "arrow-down-circle"
+}
+
+export function Card({type, title, amount, lastTransaction}: CardProps){
     return (
         <Container>
             <Content>
-                <Icon name="arrow-up-circle" />
-                <Title>Total de Entradas</Title>
-                <Amount>R$ 17.400,00</Amount>
+                <Icon name={icon[type]} type={type}/>
+                <Title>{title}</Title>
+                <Amount>{amount}</Amount>
             </Content>
             <Footer>
-                <LastTransaction>Última entrada dia 13 de abril</LastTransaction>
+                <LastTransaction>{lastTransaction}</LastTransaction>
             </Footer>
         </Container>
     );

@@ -8,7 +8,9 @@ import { Container
        , UserInfo
        , UserName, 
        UserContainer,
-       Icon} from "./styles";
+       Icon
+       , CardsContainer
+    } from "./styles";
 
 export function Home(){
     return (
@@ -25,7 +27,21 @@ export function Home(){
                     </UserInfo>
                     <Icon name="log-out"/>
                 </UserContainer>
-                <Card />
+
+                <CardsContainer>
+                    <Card 
+                        type="income"
+                        title="Total de Entradas"
+                        amount="R$ 17.400,00"
+                        lastTransaction="Última entrada dia 13 de abril"
+                    />    
+                    <Card 
+                        type="outcome"
+                        title="Total de Saídas"
+                        amount="R$ 1.259,00"
+                        lastTransaction="Última saída dia 03 de abril"
+                    />
+                </CardsContainer>
             </Header>
         </Container>
     )
