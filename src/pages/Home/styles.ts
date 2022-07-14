@@ -11,7 +11,7 @@ export const Container = styled.View`
 
 export const Header = styled.View`
     width: 100%;
-    height: ${RFPercentage(42)}px;
+    //height: ${RFPercentage(42)}px;
     background-color: ${({theme}) => theme.colors.primary};
     align-items: center;
 `;

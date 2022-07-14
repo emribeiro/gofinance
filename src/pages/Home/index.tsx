@@ -1,4 +1,5 @@
 import React from "react";
+import { BalanceCard } from "../../Components/BalanceCard";
 import { Card } from "../../Components/Card";
 import { Container
        , Header
@@ -42,6 +43,10 @@ export function Home(){
                         lastTransaction="Última saída dia 03 de abril"
                     />
                 </CardsContainer>
+                <BalanceCard 
+                    transactionTime="De 01 a 13 de Abril"
+                    amount="R$ 16.141,00"
+                />
             </Header>
         </Container>
     )
