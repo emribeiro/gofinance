@@ -21,6 +21,7 @@ import { Container
 export function Home(){
     const data = [{
         title: "Desenvolvimento de Site",
+        type: "income",
         amount: "R$ 12.000,00",
         date: "27/07/2022",
         category: {
@@ -29,21 +30,23 @@ export function Home(){
         }
     },
     {
-        title: "Desenvolvimento de Site",
-        amount: "R$ 12.000,00",
-        date: "27/07/2022",
+        title: "Hamburgueria Pizzy",
+        type: "outcome",
+        amount: "R$ 59,00",
+        date: "10/07/2022",
         category: {
-            icon: "dollar-sign",
-            name: "Vendas"
+            icon: "coffee",
+            name: "Alimentação"
         }
     },
     {
-        title: "Desenvolvimento de Site",
-        amount: "R$ 12.000,00",
-        date: "27/07/2022",
+        title: "Aluguel do Mês",
+        type: "outcome",
+        amount: "R$ 1.929,00",
+        date: "20/07/2022",
         category: {
-            icon: "dollar-sign",
-            name: "Vendas"
+            icon: "home",
+            name: "Moradia"
         }
     }
 ];

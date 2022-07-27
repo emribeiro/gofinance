@@ -21,6 +21,7 @@ interface Category{
 interface Data{
     title: string;
     amount: string;
+    type: 'income' | 'outcome';
     category: Category;
     date: string;
 }
@@ -38,7 +39,10 @@ export function TransactionItem({data}: TransactionItemProps){
             <Content>
                 <TransactionContent>
                     <Title>{data.title}</Title>
-                    <Amount>{data.amount}</Amount>
+                    <Amount type={data.type}>
+                        {data.type === 'outcome' && '- '}    
+                        {data.amount}
+                    </Amount>
                 </TransactionContent>
                 <CategoryContent>
                     <CategoryName>{data.category.name}</CategoryName>

@@ -2,6 +2,10 @@ import styled from "styled-components/native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import  Feather from "@expo/vector-icons/Feather"
 
+interface TransactionProps{
+    type: "income" | "outcome";
+}
+
 export const Container = styled.View`
     width: 100%;
     flex-direction: row;
@@ -44,10 +48,10 @@ export const Title = styled.Text`
     line-height: ${RFValue(18)}px;
 `;
 
-export const Amount = styled.Text`
+export const Amount = styled.Text<TransactionProps>`
     font-family: ${({theme}) => theme.fonts.bold};
     font-size: ${RFValue(12)}px;
-    color: ${({theme}) => theme.colors.success};
+    color: ${({theme, type}) => type === "income" ? theme.colors.success : theme.colors.attention};
     line-height: ${RFValue(18)}px;
 `;
 
