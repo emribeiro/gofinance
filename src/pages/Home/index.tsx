@@ -1,8 +1,8 @@
 import React from "react";
-import { getBottomSpace } from "react-native-iphone-x-helper";
+
 import { BalanceCard } from "../../Components/BalanceCard";
 import { Card } from "../../Components/Card";
-import { TransactionItem } from "../../Components/TransactionItem";
+import { TransactionItem, TransactionItemData } from "../../Components/TransactionItem";
 import { Container
        , Header
        , UserAvatar
@@ -18,8 +18,13 @@ import { Container
        TransactionList
     } from "./styles";
 
+export interface DataListProps extends TransactionItemData{
+    id: string,
+}
+
 export function Home(){
-    const data = [{
+    const data : DataListProps[]= [{
+        id: "1a02-1b03-1c04",
         title: "Desenvolvimento de Site",
         type: "income",
         amount: "R$ 12.000,00",
@@ -30,6 +35,7 @@ export function Home(){
         }
     },
     {
+        id: "1a02-1b03-1c05",
         title: "Hamburgueria Pizzy",
         type: "outcome",
         amount: "R$ 59,00",
@@ -40,6 +46,7 @@ export function Home(){
         }
     },
     {
+        id: "1a02-1b03-1c06",
         title: "Aluguel do Mês",
         type: "outcome",
         amount: "R$ 1.929,00",
@@ -89,11 +96,8 @@ export function Home(){
                 <Title>Últimas Transações</Title>
                 <TransactionList 
                     data={data}
+                    keyExtractor = { item => item.id}
                     renderItem={({item}) => <TransactionItem data={item}/>}
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{
-                        paddingBottom: getBottomSpace()
-                    }}
                 />
                 
             </Transactions>

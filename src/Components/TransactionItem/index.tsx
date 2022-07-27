@@ -18,7 +18,7 @@ interface Category{
     icon: string;
 }
 
-interface Data{
+export interface TransactionItemData{
     title: string;
     amount: string;
     type: 'income' | 'outcome';
@@ -27,7 +27,7 @@ interface Data{
 }
 
 interface TransactionItemProps{
-    data: Data;
+    data: TransactionItemData;
 }
 
 export function TransactionItem({data}: TransactionItemProps){
