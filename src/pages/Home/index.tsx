@@ -1,6 +1,8 @@
 import React from "react";
+import { getBottomSpace } from "react-native-iphone-x-helper";
 import { BalanceCard } from "../../Components/BalanceCard";
 import { Card } from "../../Components/Card";
+import { TransactionItem } from "../../Components/TransactionItem";
 import { Container
        , Header
        , UserAvatar
@@ -11,9 +13,41 @@ import { Container
        UserContainer,
        Icon
        , CardsContainer
+       , Transactions
+       , Title,
+       TransactionList
     } from "./styles";
 
 export function Home(){
+    const data = [{
+        title: "Desenvolvimento de Site",
+        amount: "R$ 12.000,00",
+        date: "27/07/2022",
+        category: {
+            icon: "dollar-sign",
+            name: "Vendas"
+        }
+    },
+    {
+        title: "Desenvolvimento de Site",
+        amount: "R$ 12.000,00",
+        date: "27/07/2022",
+        category: {
+            icon: "dollar-sign",
+            name: "Vendas"
+        }
+    },
+    {
+        title: "Desenvolvimento de Site",
+        amount: "R$ 12.000,00",
+        date: "27/07/2022",
+        category: {
+            icon: "dollar-sign",
+            name: "Vendas"
+        }
+    }
+];
+
     return (
         <Container>
             <Header>
@@ -48,6 +82,18 @@ export function Home(){
                     amount="R$ 16.141,00"
                 />
             </Header>
+            <Transactions>
+                <Title>Últimas Transações</Title>
+                <TransactionList 
+                    data={data}
+                    renderItem={({item}) => <TransactionItem data={item}/>}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{
+                        paddingBottom: getBottomSpace()
+                    }}
+                />
+                
+            </Transactions>
         </Container>
     )
 }

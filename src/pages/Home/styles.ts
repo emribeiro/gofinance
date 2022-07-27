@@ -62,3 +62,17 @@ export const CardsContainer = styled.View`
     flex-direction: row;
     margin-top: ${RFValue(16)}px;
 `;
+
+export const Transactions = styled.View`
+    flex: 1;
+    padding: 0 24px;
+    margin-top: 16px;
+`
+
+export const Title = styled.Text`
+    font-family: ${({theme}) => theme.fonts.regular};
+    font-size: ${RFValue(18)}px;
+    margin-bottom: 12px;
+`;
+
+export const TransactionList = styled.FlatList``;
