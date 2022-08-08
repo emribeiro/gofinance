@@ -1,5 +1,6 @@
 import React from "react";
-import { Container, Header, Title } from "./styles";
+import { Input } from "../../Components/Form/Input";
+import { Container, Form, Header, Title } from "./styles";
 
 export function Registro(){
     return (
@@ -7,6 +8,13 @@ export function Registro(){
             <Header>
                 <Title>Cadastro</Title>
             </Header>
+
+            <Form>
+                <Input
+                    placeholder="Nome" />
+                <Input
+                    placeholder="Preço" />
+            </Form>
         </Container>
     )
 }
