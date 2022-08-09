@@ -1,9 +1,19 @@
-import React from "react";
+import React, {useState} from "react";
 import { Button } from "../../Components/Form/Button";
 import { Input } from "../../Components/Form/Input";
-import { Container, Form, Header, InputGroup, Title } from "./styles";
+import { TransactionTypeButton } from "../../Components/Form/TransactionTypeButton";
+import { Container, Form, Header, InputGroup, Title, TransactionTypeGroup } from "./styles";
+
+
 
 export function Registro(){
+    const [transactionTypeSelected, setTransactionTypeSelected] = useState('');
+
+    function handleTransactionTypeSelection(type: string){
+        console.log("entrei")
+        setTransactionTypeSelected(type);
+    }
+
     return (
         <Container>
             <Header>
@@ -16,7 +26,23 @@ export function Registro(){
                         placeholder="Nome" />
                     <Input
                         placeholder="Preço" />
+
+                    <TransactionTypeGroup>
+                        <TransactionTypeButton 
+                            title="Entrada"
+                            type="income"
+                            isActive={transactionTypeSelected === 'income'}
+                            onPress={() => handleTransactionTypeSelection('income')}
+                        />
+                        <TransactionTypeButton 
+                            title="Saída"
+                            type="outcome"
+                            isActive={transactionTypeSelected === 'outcome'}
+                            onPress={() => handleTransactionTypeSelection('outcome')}
+                        />
+                    </TransactionTypeGroup>
                 </InputGroup>
+
 
                 <Button title="Enviar" />
             </Form>
