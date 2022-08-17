@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { Button } from "../../Components/Form/Button";
+import { CategorySelect } from "../../Components/Form/CategorySelect";
 import { Input } from "../../Components/Form/Input";
 import { TransactionTypeButton } from "../../Components/Form/TransactionTypeButton";
 import { Container, Form, Header, InputGroup, Title, TransactionTypeGroup } from "./styles";
@@ -41,6 +42,7 @@ export function Registro(){
                             onPress={() => handleTransactionTypeSelection('outcome')}
                         />
                     </TransactionTypeGroup>
+                    <CategorySelect title="Categoria" />
                 </InputGroup>
 
 

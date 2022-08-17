@@ -10,6 +10,7 @@ import AppLoading from 'expo-app-loading';
 import { Home } from './src/pages/Home';
 import theme from './src/global/theme';
 import { Registro } from './src/pages/Registro';
+import { CategorySelect } from './src/pages/CategorySelect';
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Poppins_400Regular
@@ -18,7 +19,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      {fontsLoaded ? <Registro /> : <AppLoading />}
+      {fontsLoaded ? <CategorySelect /> : <AppLoading />}
     </ThemeProvider>
   );
 }

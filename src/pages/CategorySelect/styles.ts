@@ -1,6 +1,6 @@
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
-import theme from "../../global/theme";
+import Feather from '@expo/vector-icons/Feather';
 
 export const Container = styled.View`
     flex: 1;
@@ -25,20 +25,28 @@ export const Title = styled.Text`
     margin-bottom: ${RFValue(18)}px;
 `;
 
-export const Form = styled.View`
-    flex: 1;
-    width: 100%;
-
-    padding: 24px;
-    justify-content: space-between;
-`;
-
-export const InputGroup = styled.View``;
-
-export const TransactionTypeGroup = styled.View`
+export const Category = styled.View`
     flex-direction: row;
-    justify-content: space-between;
-    margin-top: 16px;
-    margin-bottom: 16px;
+    padding: 16px 18px;
 `;
 
+export const Icon = styled(Feather)`
+    font-size: ${RFValue(20)}px;
+    margin-right: 8px;
+`;
+
+export const Name = styled.Text`
+    font-family: ${({theme}) => theme.fonts.regular};
+    font-size: ${RFValue(14)}px;
+`;
+
+export const Separator = styled.View`
+    width: 100%;
+    height: 1px;
+    background-color: ${({theme}) => theme.colors.text};
+`;
+
+export const Footer = styled.View`
+    margin-bottom: 16px;
+    padding: 16px;
+`;
