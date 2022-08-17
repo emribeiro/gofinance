@@ -1,18 +1,33 @@
 import React, {useState} from "react";
+import { Modal } from "react-native";
 import { Button } from "../../Components/Form/Button";
-import { CategorySelect } from "../../Components/Form/CategorySelect";
+import { CategorySelectButton } from "../../Components/Form/CategorySelectButton";
 import { Input } from "../../Components/Form/Input";
 import { TransactionTypeButton } from "../../Components/Form/TransactionTypeButton";
+import { CategorySelect } from "../CategorySelect";
 import { Container, Form, Header, InputGroup, Title, TransactionTypeGroup } from "./styles";
 
 
 
 export function Registro(){
     const [transactionTypeSelected, setTransactionTypeSelected] = useState('');
+    const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
+    const [category, setCategory] = useState({
+        name: "Categoria",
+        key: "category"
+    });
 
     function handleTransactionTypeSelection(type: string){
         console.log("entrei")
         setTransactionTypeSelected(type);
+    }
+
+    function openCategoryModal(){
+        setCategoryModalVisible(true);
+    }
+
+    function closeCategoryModal(){
+        setCategoryModalVisible(false);
     }
 
     return (
@@ -42,12 +57,23 @@ export function Registro(){
                             onPress={() => handleTransactionTypeSelection('outcome')}
                         />
                     </TransactionTypeGroup>
-                    <CategorySelect title="Categoria" />
+                    <CategorySelectButton
+                         title={category.name}
+                         onPress={openCategoryModal}
+                     />
                 </InputGroup>
 
 
                 <Button title="Enviar" />
             </Form>
+
+            <Modal visible={isCategoryModalVisible}>
+                <CategorySelect 
+                    closeSelectedCategory={closeCategoryModal}
+                    setCategory={setCategory} 
+                    category={category}
+                />
+            </Modal>
         </Container>
     )
 }

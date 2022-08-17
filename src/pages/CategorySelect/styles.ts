@@ -1,6 +1,12 @@
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 import Feather from '@expo/vector-icons/Feather';
+import theme from "../../global/theme";
+import { TouchableOpacity } from "react-native";
+
+interface CategoryProps{
+    isActive: boolean;
+}
 
 export const Container = styled.View`
     flex: 1;
@@ -25,9 +31,13 @@ export const Title = styled.Text`
     margin-bottom: ${RFValue(18)}px;
 `;
 
-export const Category = styled.View`
+export const Category = styled(TouchableOpacity)<CategoryProps>`
     flex-direction: row;
     padding: 16px 18px;
+
+    background-color: ${({isActive}) => 
+        isActive ? theme.colors.secondary : theme.colors.background  
+    }
 `;
 
 export const Icon = styled(Feather)`

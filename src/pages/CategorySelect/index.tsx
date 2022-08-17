@@ -6,7 +6,20 @@ import { Category, Container
 import { categories } from "../../utils/categories";
 import { Button } from "../../Components/Form/Button";
 
-export function CategorySelect(){
+interface Category{
+    key: string;
+    name: string;
+}
+
+interface Props{
+    category: Category;
+    setCategory: (category: Category) => void;
+    closeSelectedCategory: () => void;
+}
+
+export function CategorySelect({category, setCategory, closeSelectedCategory}: Props){
+
+    console.log(category);
     return (
         <Container>
             <Header>
@@ -18,7 +31,10 @@ export function CategorySelect(){
                 style={{flex: 1, width: "100%"}}
                 keyExtractor={item => item.key}
                 renderItem={({item}) => (
-                    <Category>
+                    <Category
+                        isActive= {category.key === item.key} 
+                        onPress={() => setCategory(item)}
+                    >
                         <Icon name={item.icon} />
                         <Name>{item.name}</Name>
                     </Category>
@@ -26,7 +42,9 @@ export function CategorySelect(){
                 ItemSeparatorComponent={() => <Separator />}
             />
             <Footer>
-                <Button title="Selecionar" />
+                <Button title="Selecionar" 
+                    onPress={closeSelectedCategory}
+                />
             </Footer>
         </Container>
 
