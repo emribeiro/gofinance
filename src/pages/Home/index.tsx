@@ -16,6 +16,7 @@ import { Container
        , Transactions
        , Title,
        TransactionList
+       , LogoutButton
     } from "./styles";
 
 export interface DataListProps extends TransactionItemData{
@@ -70,7 +71,9 @@ export function Home(){
                             <UserName>Eric</UserName>
                         </User>
                     </UserInfo>
-                    <Icon name="log-out"/>
+                    <LogoutButton>
+                        <Icon name="log-out"/>
+                    </LogoutButton>
                 </UserContainer>
 
                 <CardsContainer>

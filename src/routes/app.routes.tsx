@@ -5,6 +5,7 @@ import { Home } from '../pages/Home';
 import { Registro } from '../pages/Registro';
 import { useTheme } from 'styled-components';
 import Feather from '@expo/vector-icons/Feather';
+import { Platform } from 'react-native';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 
@@ -19,6 +20,10 @@ export function AppRoutes(){
                 tabBarLabelPosition: 'beside-icon',
                 tabBarLabelStyle: {
                     fontFamily: theme.fonts.regular
+                },
+                tabBarStyle: {
+                    height: 88,
+                    paddingVertical: Platform.OS === 'ios' ? 20 : 0, 
                 }
             }}
         >
