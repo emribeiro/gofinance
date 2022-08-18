@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { useForm } from "react-hook-form";
-import { Modal } from "react-native";
+import { Alert, Modal } from "react-native";
 import { Button } from "../../Components/Form/Button";
 import { CategorySelectButton } from "../../Components/Form/CategorySelectButton";
 import { InputForm } from "../../Components/Form/InputForm";
@@ -10,6 +10,7 @@ import { Container, Form, Header, InputGroup, Title, TransactionTypeGroup } from
 
 import * as Yup from 'yup';
 import {yupResolver } from '@hookform/resolvers/yup';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface FormData{
     name: string;
@@ -31,13 +32,22 @@ export function Registro(){
     const {control, handleSubmit, formState: {errors}} = useForm({
         resolver: yupResolver(formSchema)
     });
+    const dataKey = '@gofinance:transactions';
 
     const [category, setCategory] = useState({
         name: "Categoria",
         key: "category"
     });
 
-    function handleRegister(form: FormData){
+    async function handleRegister(form: FormData){
+        if(!transactionTypeSelected){
+            return Alert.alert("Tipo da Transação é obrigatório!");
+        }
+
+        if(category.key === 'category'){
+            return Alert.alert("Categoria da Transação é obrigatória!");
+        }
+
         const data = {
             name: form.name,
             amount: form.amount,
@@ -45,7 +55,11 @@ export function Registro(){
             category: category.key
         }
 
-        console.log(data);
+        try{
+            await AsyncStorage.setItem(dataKey, JSON.stringify(data));
+        }catch(e){
+            Alert.alert("Erro na gravação dos dados!")
+        }
     }
 
     function handleTransactionTypeSelection(type: string){
