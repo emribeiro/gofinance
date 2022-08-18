@@ -11,6 +11,10 @@ import { Container, Form, Header, InputGroup, Title, TransactionTypeGroup } from
 import * as Yup from 'yup';
 import {yupResolver } from '@hookform/resolvers/yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from "@react-navigation/native";
+
+import uuid from 'react-native-uuid';
+
 
 interface FormData{
     name: string;
@@ -29,10 +33,12 @@ const formSchema = Yup.object({
 export function Registro(){
     const [transactionTypeSelected, setTransactionTypeSelected] = useState('');
     const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
-    const {control, handleSubmit, formState: {errors}} = useForm({
+    const {control, handleSubmit, reset, formState: {errors}} = useForm({
         resolver: yupResolver(formSchema)
     });
     const dataKey = '@gofinance:transactions';
+
+    const navigations = useNavigation();
 
     const [category, setCategory] = useState({
         name: "Categoria",
@@ -48,15 +54,32 @@ export function Registro(){
             return Alert.alert("Categoria da Transação é obrigatória!");
         }
 
-        const data = {
+        const newTransaction = {
+            id: String(uuid.v4()),
             name: form.name,
             amount: form.amount,
             type: transactionTypeSelected,
-            category: category.key
+            category: category.key,
+            date: new Date()
         }
 
         try{
-            await AsyncStorage.setItem(dataKey, JSON.stringify(data));
+            const data = await AsyncStorage.getItem(dataKey);
+            const currentData = data ? JSON.parse(data) : [];
+            const newData = [
+                ...currentData,
+                newTransaction
+            ]
+            await AsyncStorage.setItem(dataKey, JSON.stringify(newData));
+
+            reset();
+            setTransactionTypeSelected('');
+            setCategory({
+                name: "Categoria",
+                key: "category"
+            });
+
+            navigations.navigate('Home');
         }catch(e){
             Alert.alert("Erro na gravação dos dados!")
         }
