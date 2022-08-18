@@ -8,16 +8,29 @@ import { TransactionTypeButton } from "../../Components/Form/TransactionTypeButt
 import { CategorySelect } from "../CategorySelect";
 import { Container, Form, Header, InputGroup, Title, TransactionTypeGroup } from "./styles";
 
+import * as Yup from 'yup';
+import {yupResolver } from '@hookform/resolvers/yup';
+
 interface FormData{
     name: string;
     amount: string;
 }
 
+const formSchema = Yup.object({
+    name: Yup.string().required("O nome é obrigatório"),
+    amount: Yup
+        .number()
+        .typeError("Formato de Valor inválido")
+        .positive("O valor deve ser positivo")
+        .required("O valor é obrigatório!"),
+});
 
 export function Registro(){
     const [transactionTypeSelected, setTransactionTypeSelected] = useState('');
     const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
-    const {control, handleSubmit} = useForm();
+    const {control, handleSubmit, formState: {errors}} = useForm({
+        resolver: yupResolver(formSchema)
+    });
 
     const [category, setCategory] = useState({
         name: "Categoria",
@@ -58,10 +71,12 @@ export function Registro(){
                     <InputForm
                         control={control}
                         name="name"
+                        errors={errors.name && errors.name.message}
                         placeholder="Nome" />
                     <InputForm
                         control={control}
                         name="amount"
+                        errors={errors.amount && errors.amount.message}
                         placeholder="Preço" />
 
                     <TransactionTypeGroup>
