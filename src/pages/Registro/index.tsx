@@ -1,24 +1,41 @@
 import React, {useState} from "react";
+import { useForm } from "react-hook-form";
 import { Modal } from "react-native";
 import { Button } from "../../Components/Form/Button";
 import { CategorySelectButton } from "../../Components/Form/CategorySelectButton";
-import { Input } from "../../Components/Form/Input";
+import { InputForm } from "../../Components/Form/InputForm";
 import { TransactionTypeButton } from "../../Components/Form/TransactionTypeButton";
 import { CategorySelect } from "../CategorySelect";
 import { Container, Form, Header, InputGroup, Title, TransactionTypeGroup } from "./styles";
 
+interface FormData{
+    name: string;
+    amount: string;
+}
 
 
 export function Registro(){
     const [transactionTypeSelected, setTransactionTypeSelected] = useState('');
     const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
+    const {control, handleSubmit} = useForm();
+
     const [category, setCategory] = useState({
         name: "Categoria",
         key: "category"
     });
 
+    function handleRegister(form: FormData){
+        const data = {
+            name: form.name,
+            amount: form.amount,
+            type: transactionTypeSelected,
+            category: category.key
+        }
+
+        console.log(data);
+    }
+
     function handleTransactionTypeSelection(type: string){
-        console.log("entrei")
         setTransactionTypeSelected(type);
     }
 
@@ -38,9 +55,13 @@ export function Registro(){
 
             <Form>
                 <InputGroup>
-                    <Input
+                    <InputForm
+                        control={control}
+                        name="name"
                         placeholder="Nome" />
-                    <Input
+                    <InputForm
+                        control={control}
+                        name="amount"
                         placeholder="Preço" />
 
                     <TransactionTypeGroup>
@@ -64,8 +85,11 @@ export function Registro(){
                 </InputGroup>
 
 
-                <Button title="Enviar" />
-            </Form>
+                <Button 
+                    title="Enviar"
+                    onPress={handleSubmit(handleRegister)}
+                 />
+            </Form> 
 
             <Modal visible={isCategoryModalVisible}>
                 <CategorySelect 
