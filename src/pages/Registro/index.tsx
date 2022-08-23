@@ -65,8 +65,7 @@ export function Registro(){
 
         try{
             const data = await AsyncStorage.getItem(dataKey);
-            // const currentData = data ? JSON.parse(data) : [];
-            const currentData = [];
+            const currentData = data ? JSON.parse(data) : [];
             const newData = [
                 ...currentData,
                 newTransaction

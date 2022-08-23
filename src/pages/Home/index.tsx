@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { BalanceCard } from "../../Components/BalanceCard";
 import { Card } from "../../Components/Card";
@@ -50,14 +51,16 @@ export function Home(){
                                                         }
                                                     });
 
-        console.log(formattedData);
-
         setData(formattedData);
     }
 
     useEffect( () => {
         loadTransactions()
     }, []);
+
+    useFocusEffect(useCallback(() => {
+        loadTransactions()
+    }, []));
 
     return (
         <Container>
