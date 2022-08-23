@@ -1,4 +1,8 @@
 import React from 'react';
+
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
+
 import { ThemeProvider } from 'styled-components';
 
 import { useFonts
@@ -7,10 +11,7 @@ import { useFonts
        , Poppins_700Bold } from '@expo-google-fonts/poppins';
 import AppLoading from 'expo-app-loading';
 
-import { Home } from './src/pages/Home';
 import theme from './src/global/theme';
-import { Registro } from './src/pages/Registro';
-import { CategorySelect } from './src/pages/CategorySelect';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppRoutes } from './src/routes/app.routes';
 

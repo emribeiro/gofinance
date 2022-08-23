@@ -59,13 +59,14 @@ export function Registro(){
             name: form.name,
             amount: form.amount,
             type: transactionTypeSelected,
-            category: category.key,
+            categoryKey: category.key,
             date: new Date()
         }
 
         try{
             const data = await AsyncStorage.getItem(dataKey);
-            const currentData = data ? JSON.parse(data) : [];
+            // const currentData = data ? JSON.parse(data) : [];
+            const currentData = [];
             const newData = [
                 ...currentData,
                 newTransaction
@@ -79,7 +80,7 @@ export function Registro(){
                 key: "category"
             });
 
-            navigations.navigate('Home');
+            navigations.navigate("Home");
         }catch(e){
             Alert.alert("Erro na gravação dos dados!")
         }
