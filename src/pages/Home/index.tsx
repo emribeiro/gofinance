@@ -1,6 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
+import { ActivityIndicator } from "react-native";
+import { useTheme } from "styled-components";
 
 import { BalanceCard } from "../../Components/BalanceCard";
 import { Card } from "../../Components/Card";
@@ -18,30 +20,62 @@ import { Container
        , Transactions
        , Title,
        TransactionList
-       , LogoutButton
+       , LogoutButton,
+       LoadContainer
     } from "./styles";
 
 export interface DataListProps extends TransactionItemData{
     id: string,
 }
 
+interface TotalAmountData {
+    amount: string,
+    lastTransactionDate?: Date
+}
+
+interface ResumeData {
+    totalIncome: TotalAmountData,
+    totalOutcome: TotalAmountData
+    balance: string
+}
+
 export function Home(){
     const dataKey = '@gofinance:transactions';
     const [data, setData] = useState<DataListProps[]>([]);
+    const [isLoading, setLoading] = useState(true);
+    const [resumeData, setResumeData] = useState<ResumeData>({
+        totalIncome: {
+            amount: "R$ 0,00"
+        }, 
+        totalOutcome: {
+            amount: "R$ 0,00"
+        },
+        balance: "R$ 0,00"
+    });
+
+    const theme = useTheme();
 
     async function loadTransactions(){
         const data = await AsyncStorage.getItem(dataKey);
         const currentData = data ? JSON.parse(data) : [];
+        
+        let sumIncome = 0;
+        let sumOutcome = 0;
 
         const formattedData : DataListProps[] = currentData
                                                     .map((item : DataListProps) => {
+
+                                                        if(item.type === "income"){
+                                                            sumIncome += Number(item.amount);
+                                                        }else{
+                                                            sumOutcome += Number(item.amount);
+                                                        }
+
                                                         return {
                                                             id: item.id,
                                                             name: item.name,
                                                             type: item.type,
-                                                            amount: item.amount.toLocaleString('pt-BR', { style: 'currency'
-                                                                                                        , currency: 'BRL'}
-                                                                                              ),
+                                                            amount: Number(item.amount).toLocaleString('pt-BR', { style: 'currency' , currency: 'BRL'}),
                                                             date: Intl.DateTimeFormat('pt-BR', {
                                                                 day: '2-digit',
                                                                 month: '2-digit',
@@ -50,8 +84,27 @@ export function Home(){
                                                             categoryKey: item.categoryKey
                                                         }
                                                     });
+        const balanceAmount = sumIncome - sumOutcome;
+        const resumeData : ResumeData = {
+            totalIncome: {
+                amount: sumIncome.toLocaleString('pt-BR', { style: 'currency'
+                                                          , currency: 'BRL'}
+                                                )
+            },
+            totalOutcome: {
+                amount: sumOutcome.toLocaleString('pt-BR', { style: 'currency'
+                                                          , currency: 'BRL'}
+                                                )
+            },
+            balance: balanceAmount.toLocaleString('pt-BR', { style: 'currency'
+            , currency: 'BRL'}
+  )
+        }
 
+        setResumeData(resumeData);
         setData(formattedData);
+
+        setLoading(false);
     }
 
     useEffect( () => {
@@ -64,49 +117,63 @@ export function Home(){
 
     return (
         <Container>
-            <Header>
-                <UserContainer>
-                    <UserInfo>
-                        <UserAvatar 
-                            source={{ uri: 'https://avatars.githubusercontent.com/u/18245701?s=40&v=4'}} />
-                        <User>
-                            <UserGreeting>Olá,</UserGreeting>
-                            <UserName>Eric</UserName>
-                        </User>
-                    </UserInfo>
-                    <LogoutButton>
-                        <Icon name="log-out"/>
-                    </LogoutButton>
-                </UserContainer>
-
-                <CardsContainer>
-                    <Card 
-                        type="income"
-                        title="Total de Entradas"
-                        amount="R$ 17.400,00"
-                        lastTransaction="Última entrada dia 13 de abril"
-                    />    
-                    <Card 
-                        type="outcome"
-                        title="Total de Saídas"
-                        amount="R$ 1.259,00"
-                        lastTransaction="Última saída dia 03 de abril"
-                    />
-                </CardsContainer>
-                <BalanceCard 
-                    transactionTime="De 01 a 13 de Abril"
-                    amount="R$ 16.141,00"
-                />
-            </Header>
-            <Transactions>
-                <Title>Últimas Transações</Title>
-                <TransactionList 
-                    data={data}
-                    keyExtractor = { item => item.id}
-                    renderItem={({item}) => <TransactionItem data={item}/>}
-                />
+            
+            {
+                isLoading ?
                 
-            </Transactions>
-        </Container>
+                <LoadContainer>
+                    <ActivityIndicator 
+                        color={theme.colors.primary}
+                        size="large"    
+                        />
+                </LoadContainer>
+                :
+                <>
+                    <Header>
+                        <UserContainer>
+                            <UserInfo>
+                                <UserAvatar 
+                                    source={{ uri: 'https://avatars.githubusercontent.com/u/18245701?s=40&v=4'}} />
+                                <User>
+                                    <UserGreeting>Olá,</UserGreeting>
+                                    <UserName>Eric</UserName>
+                                </User>
+                            </UserInfo>
+                            <LogoutButton>
+                                <Icon name="log-out"/>
+                            </LogoutButton>
+                        </UserContainer>
+        
+                        <CardsContainer>
+                            <Card 
+                                type="income"
+                                title="Total de Entradas"
+                                amount={resumeData.totalIncome.amount}
+                                lastTransaction="Última entrada dia 13 de abril"
+                            />    
+                            <Card 
+                                type="outcome"
+                                title="Total de Saídas"
+                                amount={resumeData.totalOutcome.amount}
+                                lastTransaction="Última saída dia 03 de abril"
+                            />
+                        </CardsContainer>
+                        <BalanceCard 
+                            transactionTime="De 01 a 13 de Abril"
+                            amount={resumeData.balance}
+                        />
+                    </Header>
+                    <Transactions>
+                        <Title>Últimas Transações</Title>
+                        <TransactionList 
+                            data={data}
+                            keyExtractor = { item => item.id}
+                            renderItem={({item}) => <TransactionItem data={item}/>}
+                        />
+                        
+                    </Transactions>
+                </>
+            }
+            </Container>
     )
 }
