@@ -30,7 +30,7 @@ export interface DataListProps extends TransactionItemData{
 
 interface TotalAmountData {
     amount: string,
-    lastTransactionDate?: Date
+    lastTransactionDate: string
 }
 
 interface ResumeData {
@@ -45,15 +45,26 @@ export function Home(){
     const [isLoading, setLoading] = useState(true);
     const [resumeData, setResumeData] = useState<ResumeData>({
         totalIncome: {
-            amount: "R$ 0,00"
+            amount: "R$ 0,00",
+            lastTransactionDate: ""
         }, 
         totalOutcome: {
-            amount: "R$ 0,00"
+            amount: "R$ 0,00",
+            lastTransactionDate: ""
         },
         balance: "R$ 0,00"
     });
 
     const theme = useTheme();
+
+    function getLastTransaction( collection : DataListProps[]
+                               , type: "income" | "outcome") : string{
+        const typeTransactions = collection.filter(item => item.type === type);
+
+        const maxTransaction = new Date(Math.max.apply(Math, typeTransactions.map( item => new Date(item.date).getTime())))
+                                ;
+        return `Última ${type === 'income' ? 'entrada' : 'saida'} dia ${maxTransaction.getDate()} de ${maxTransaction.toLocaleString("pt-BR", {month: "long"})}`;
+    }
 
     async function loadTransactions(){
         const data = await AsyncStorage.getItem(dataKey);
@@ -89,12 +100,14 @@ export function Home(){
             totalIncome: {
                 amount: sumIncome.toLocaleString('pt-BR', { style: 'currency'
                                                           , currency: 'BRL'}
-                                                )
+                                                ),
+                lastTransactionDate: getLastTransaction(currentData, "income")
             },
             totalOutcome: {
                 amount: sumOutcome.toLocaleString('pt-BR', { style: 'currency'
                                                           , currency: 'BRL'}
-                                                )
+                                                ),
+                lastTransactionDate: getLastTransaction(currentData, "outcome")
             },
             balance: balanceAmount.toLocaleString('pt-BR', { style: 'currency'
             , currency: 'BRL'}
@@ -149,13 +162,13 @@ export function Home(){
                                 type="income"
                                 title="Total de Entradas"
                                 amount={resumeData.totalIncome.amount}
-                                lastTransaction="Última entrada dia 13 de abril"
+                                lastTransaction={resumeData.totalIncome.lastTransactionDate}
                             />    
                             <Card 
                                 type="outcome"
                                 title="Total de Saídas"
                                 amount={resumeData.totalOutcome.amount}
-                                lastTransaction="Última saída dia 03 de abril"
+                                lastTransaction={resumeData.totalOutcome.lastTransactionDate}
                             />
                         </CardsContainer>
                         <BalanceCard 
