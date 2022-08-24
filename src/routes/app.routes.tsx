@@ -6,6 +6,7 @@ import { Registro } from '../pages/Registro';
 import { useTheme } from 'styled-components';
 import Feather from '@expo/vector-icons/Feather';
 import { Platform } from 'react-native';
+import { Resume } from '../pages/Resume';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 
@@ -55,7 +56,7 @@ export function AppRoutes(){
             />
             <Screen 
                 name="Resumo"
-                component={Registro}
+                component={Resume}
                 options={{
                     tabBarIcon: (({color, size}) => 
                         <Feather 
