@@ -1,17 +1,21 @@
 import React from "react";
+import { FlatList } from "react-native";
+import { CategoryResumeData } from "../../api/transactions";
 import { ResumeItem } from "../ResumeItem";
 import { Container } from "./styles";
 
-export function ResumeItemList(){
+interface ResumeItemListProps{
+    data: CategoryResumeData[];
+}
+
+export function ResumeItemList({data} :ResumeItemListProps){
+
     return (
         <Container>
-            <ResumeItem 
-                categoryKey="leisure"
-                amount={150.00}
-            />
-            <ResumeItem 
-                categoryKey="food"
-                amount={75.00}
+            <FlatList 
+                data={data}
+                keyExtractor={(item) => item.categoryKey}
+                renderItem={({item}) => <ResumeItem categoryKey={item.categoryKey} amount={item.amount} />}
             />
         </Container>
 

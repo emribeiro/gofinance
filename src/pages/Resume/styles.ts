@@ -24,3 +24,8 @@ export const Title = styled.Text`
 
     margin-bottom: ${RFValue(18)}px;
 `;
+
+export const ChartContainer = styled.Text`
+    width: 100%;
+    align-items: center;
+`;
