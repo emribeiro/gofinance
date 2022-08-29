@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from "react";
 import { RFValue } from "react-native-responsive-fontsize";
 import { VictoryPie } from "victory-native";
-import { CategoryResumeData, getCategoryResumeExpenses } from "../../api/transactions";
+import { CategoryResumeData, getCategoryResumeExpensesPerMonth } from "../../api/transactions";
 import { ResumeItemList } from "../../Components/ResumeItemList";
 import { useTheme } from "styled-components";
+
+import { addMonths, subMonths, format } from "date-fns";
+import {ptBR} from "date-fns/locale";
 
 import {
     ChartContainer,
@@ -20,17 +23,26 @@ import {
 export function Resume(){
 
     const [resume, setResume] = useState<CategoryResumeData[]>([]);
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+
     const theme = useTheme();
 
-    async function loadData(){
-        const response = await getCategoryResumeExpenses();
-        console.log(response);
-        setResume(response);
+    function handleMonthSelectButton(action : "next" | "prev"){
+        if(action === 'next'){
+            setSelectedDate(addMonths(selectedDate,1));
+        }else{
+            setSelectedDate(subMonths(selectedDate,1));
+        }
     }
+
+    async function loadData(){
+        const response = await getCategoryResumeExpensesPerMonth(selectedDate);
+        setResume(response);
+    } 
 
      useEffect(() => {
         loadData();
-    }, [])
+    }, [selectedDate])
 
     return (
 
@@ -44,13 +56,15 @@ export function Resume(){
             <Content>
 
                 <MonthSelectContainer>
-                    <MonthSelectButton>
+                    <MonthSelectButton onPress={() => handleMonthSelectButton("prev")}>
                         <MonthSelectIcon name="chevron-left" />
                     </MonthSelectButton>
 
-                    <Month>Maio, 2022</Month>
+                    <Month>
+                        {format(selectedDate, 'MMMM, yyyy', {locale: ptBR})}
+                    </Month>
 
-                    <MonthSelectButton>
+                    <MonthSelectButton onPress={() => handleMonthSelectButton("next")}>
                         <MonthSelectIcon name="chevron-right" />
                     </MonthSelectButton>
                 </MonthSelectContainer>

@@ -26,9 +26,14 @@ export async function getTransactions():Promise<TransactionData[]>{
     return currentData;
 }
 
-export async function getCategoryResumeExpenses(): Promise<CategoryResumeData[]>{
+export async function getCategoryResumeExpensesPerMonth(selectedDate: Date): Promise<CategoryResumeData[]>{
     const transactions = await getTransactions();
-    const expenses = transactions.filter((item) => item.type === 'outcome');
+    const expenses = transactions.filter(
+        (item) => 
+            item.type === 'outcome' &&
+            new Date(item.date).getMonth() == selectedDate.getMonth() &&
+            new Date(item.date).getFullYear() == selectedDate.getFullYear()
+    );
     const totalExpenses = expenses.reduce((accr, expense) => accr + Number(expense.amount), 0);
     const resumeCategoryData: CategoryResumeData[] = [];
     categories.forEach((category) => {
