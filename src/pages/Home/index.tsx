@@ -1,11 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
-import { useTheme } from "styled-components";
 
 import { BalanceCard } from "../../Components/BalanceCard";
 import { Card } from "../../Components/Card";
+import { LoadIndicator } from "../../Components/LoadIndicator";
 import { TransactionItem, TransactionItemData } from "../../Components/TransactionItem";
 import { Container
        , Header
@@ -20,8 +19,7 @@ import { Container
        , Transactions
        , Title,
        TransactionList
-       , LogoutButton,
-       LoadContainer
+       , LogoutButton
     } from "./styles";
 
 export interface DataListProps extends TransactionItemData{
@@ -54,8 +52,6 @@ export function Home(){
         },
         balance: "R$ 0,00"
     });
-
-    const theme = useTheme();
 
     function getLastTransaction( collection : DataListProps[]
                                , type: "income" | "outcome") : string{
@@ -133,13 +129,7 @@ export function Home(){
             
             {
                 isLoading ?
-                
-                <LoadContainer>
-                    <ActivityIndicator 
-                        color={theme.colors.primary}
-                        size="large"    
-                        />
-                </LoadContainer>
+                <LoadIndicator />
                 :
                 <>
                     <Header>

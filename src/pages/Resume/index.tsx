@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useCallback} from "react";
 import { RFValue } from "react-native-responsive-fontsize";
 import { VictoryPie } from "victory-native";
 import { CategoryResumeData, getCategoryResumeExpensesPerMonth } from "../../api/transactions";
@@ -19,11 +19,14 @@ import {
     MonthSelectIcon,
     Month
 } from "./styles";
+import { LoadIndicator } from "../../Components/LoadIndicator";
+import { useFocusEffect } from "@react-navigation/native";
 
 export function Resume(){
 
     const [resume, setResume] = useState<CategoryResumeData[]>([]);
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+    const [isLoading, setIsLoading] = useState(true);
 
     const theme = useTheme();
 
@@ -36,13 +39,15 @@ export function Resume(){
     }
 
     async function loadData(){
+        setIsLoading(true);
         const response = await getCategoryResumeExpensesPerMonth(selectedDate);
         setResume(response);
+        setIsLoading(false);
     } 
 
-     useEffect(() => {
-        loadData();
-    }, [selectedDate])
+    useFocusEffect(useCallback(() => {
+        loadData()
+    }, [selectedDate]));
 
     return (
 
@@ -52,45 +57,49 @@ export function Resume(){
                     Gastos por Categoria
                 </Title>
             </Header>
-            
-            <Content>
+            {
+                isLoading ?
+                <LoadIndicator/>
+                :
+                <Content>
 
-                <MonthSelectContainer>
-                    <MonthSelectButton onPress={() => handleMonthSelectButton("prev")}>
-                        <MonthSelectIcon name="chevron-left" />
-                    </MonthSelectButton>
+                    <MonthSelectContainer>
+                        <MonthSelectButton onPress={() => handleMonthSelectButton("prev")}>
+                            <MonthSelectIcon name="chevron-left" />
+                        </MonthSelectButton>
 
-                    <Month>
-                        {format(selectedDate, 'MMMM, yyyy', {locale: ptBR})}
-                    </Month>
+                        <Month>
+                            {format(selectedDate, 'MMMM, yyyy', {locale: ptBR})}
+                        </Month>
 
-                    <MonthSelectButton onPress={() => handleMonthSelectButton("next")}>
-                        <MonthSelectIcon name="chevron-right" />
-                    </MonthSelectButton>
-                </MonthSelectContainer>
+                        <MonthSelectButton onPress={() => handleMonthSelectButton("next")}>
+                            <MonthSelectIcon name="chevron-right" />
+                        </MonthSelectButton>
+                    </MonthSelectContainer>
 
-                <ChartContainer>
-                    <VictoryPie
+                    <ChartContainer>
+                        <VictoryPie
+                            data={resume}
+                            colorScale={resume.map(category => category.color)}
+                            labelRadius={50}
+                            style={{
+                                labels: {
+                                    fontSize: RFValue(16),
+                                    fontWeight: 'bold',
+                                    fontFamily: theme.fonts.bold,
+                                    fill: theme.colors.shape
+                                }
+                            }}
+                            x="percent"
+                            y="amount"
+                        />
+                    </ChartContainer>
+                
+                    <ResumeItemList 
                         data={resume}
-                        colorScale={resume.map(category => category.color)}
-                        labelRadius={50}
-                        style={{
-                            labels: {
-                                fontSize: RFValue(16),
-                                fontWeight: 'bold',
-                                fontFamily: theme.fonts.bold,
-                                fill: theme.colors.shape
-                            }
-                        }}
-                        x="percent"
-                        y="amount"
                     />
-                </ChartContainer>
-            
-                <ResumeItemList 
-                    data={resume}
-                />
-            </Content>
+                </Content>
+            }
         </Container>
     );
 }
