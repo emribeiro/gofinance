@@ -16,10 +16,11 @@ import LogoSVG from '../../assets/svg/logo.svg';
 import GoogleSVG from '../../assets/svg/google.svg'
 import AppleSVG from '../../assets/svg/apple.svg'
 import { SignInButton } from "../../Components/SignInButton";
-import { AuthContext } from "../../contexts/AuthContest";
+import { useAuth } from "../../hooks/auth";
 
 export function SignIn(){
-    const context = useContext(AuthContext);
+    const {user} = useAuth();
+    console.log(user);
 
     return (
         <Container>
