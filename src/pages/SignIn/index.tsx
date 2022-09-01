@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 
 import {
     Container,
@@ -16,8 +16,11 @@ import LogoSVG from '../../assets/svg/logo.svg';
 import GoogleSVG from '../../assets/svg/google.svg'
 import AppleSVG from '../../assets/svg/apple.svg'
 import { SignInButton } from "../../Components/SignInButton";
+import { AuthContext } from "../../contexts/AuthContest";
 
 export function SignIn(){
+    const context = useContext(AuthContext);
+
     return (
         <Container>
             <Header>

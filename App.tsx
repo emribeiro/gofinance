@@ -16,6 +16,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AppRoutes } from './src/routes/app.routes';
 import { StatusBar } from 'react-native';
 import { SignIn } from './src/pages/SignIn';
+import { AuthContext } from './src/contexts/AuthContest';
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Poppins_400Regular
@@ -25,9 +26,12 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
+        <StatusBar barStyle="light-content" />
         { fontsLoaded ? 
             // <AppRoutes /> 
-            <SignIn />
+            <AuthContext.Provider value={[]} >
+              <SignIn />
+            </AuthContext.Provider>
           : <AppLoading />}
       </NavigationContainer>
     </ThemeProvider>
