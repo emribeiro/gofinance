@@ -7,11 +7,15 @@ import {
     Footer,
     TitleContainer,
     Title,
-    SignInTitle
+    SignInTitle,
+    SignInButtonContainer
 }
 from './styles'
 
 import LogoSVG from '../../assets/svg/logo.svg';
+import GoogleSVG from '../../assets/svg/google.svg'
+import AppleSVG from '../../assets/svg/apple.svg'
+import { SignInButton } from "../../Components/SignInButton";
 
 export function SignIn(){
     return (
@@ -33,6 +37,16 @@ export function SignIn(){
                 </SignInContainer>
             </Header>
             <Footer>
+                <SignInButtonContainer>
+                    <SignInButton 
+                        title="Entrar com Google"
+                        svg={GoogleSVG}
+                    />
+                    <SignInButton 
+                        title="Entrar com Apple"
+                        svg={AppleSVG}
+                    />
+                </SignInButtonContainer>
 
             </Footer>
 
