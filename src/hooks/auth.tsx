@@ -26,13 +26,14 @@ interface User{
 }
 const AuthContext = createContext({} as IAuthContextData);
 
+
 function AuthProvider({children}: AuthProviderProps){
     const [user, setUser] = useState<User>({} as User);
-
+    
     async function signInWithGoogle(){
+        const {CLIENT_ID} = process.env;
+        const {REDIRECT_URI}  = process.env;
         try{
-            const CLIENT_ID = '828527345435-m9ntgfpdjr8mlp72v0t74ac86rda9k5j.apps.googleusercontent.com';
-            const REDIRECT_URI = 'https://auth.expo.io/@emribeiro/gofinances';
             const RESPONSE_TYPE = 'token';
             const SCOPE = encodeURI('profile email');
     
