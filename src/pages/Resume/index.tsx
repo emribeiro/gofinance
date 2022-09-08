@@ -21,12 +21,14 @@ import {
 } from "./styles";
 import { LoadIndicator } from "../../Components/LoadIndicator";
 import { useFocusEffect } from "@react-navigation/native";
+import { useAuth } from "../../hooks/auth";
 
 export function Resume(){
 
     const [resume, setResume] = useState<CategoryResumeData[]>([]);
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const [isLoading, setIsLoading] = useState(true);
+    const {user} = useAuth();
 
     const theme = useTheme();
 
@@ -40,7 +42,7 @@ export function Resume(){
 
     async function loadData(){
         setIsLoading(true);
-        const response = await getCategoryResumeExpensesPerMonth(selectedDate);
+        const response = await getCategoryResumeExpensesPerMonth(selectedDate, user.id);
         setResume(response);
         setIsLoading(false);
     } 

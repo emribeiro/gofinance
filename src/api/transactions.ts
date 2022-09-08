@@ -17,17 +17,18 @@ export interface CategoryResumeData{
     color: string;
 }
 
-const dataKey = '@gofinance:transactions';
 
-export async function getTransactions():Promise<TransactionData[]>{
+
+export async function getTransactions(user_id: string):Promise<TransactionData[]>{
+    const dataKey = `@gofinance:transactions_user:${user_id}`;
     const data = await AsyncStorage.getItem(dataKey);
     const currentData:TransactionData[] = data ? JSON.parse(data) : [];
 
     return currentData;
 }
 
-export async function getCategoryResumeExpensesPerMonth(selectedDate: Date): Promise<CategoryResumeData[]>{
-    const transactions = await getTransactions();
+export async function getCategoryResumeExpensesPerMonth(selectedDate: Date, user_id:string): Promise<CategoryResumeData[]>{
+    const transactions = await getTransactions(user_id);
     const expenses = transactions.filter(
         (item) => 
             item.type === 'outcome' &&

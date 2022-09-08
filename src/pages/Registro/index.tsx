@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from "@react-navigation/native";
 
 import uuid from 'react-native-uuid';
+import { useAuth } from "../../hooks/auth";
 
 
 interface FormData{
@@ -36,7 +37,9 @@ export function Registro(){
     const {control, handleSubmit, reset, formState: {errors}} = useForm({
         resolver: yupResolver(formSchema)
     });
-    const dataKey = '@gofinance:transactions';
+    const {user} = useAuth();
+
+    const dataKey = `@gofinance:transactions_user:${user.id}`;
 
     const navigations = useNavigation();
 

@@ -39,7 +39,8 @@ interface ResumeData {
 }
 
 export function Home(){
-    const dataKey = '@gofinance:transactions';
+    const {signOut, user} = useAuth();
+    const dataKey = `@gofinance:transactions_user:${user.id}`;
     const [data, setData] = useState<DataListProps[]>([]);
     const [isLoading, setLoading] = useState(true);
     const [resumeData, setResumeData] = useState<ResumeData>({
@@ -54,10 +55,13 @@ export function Home(){
         balance: "R$ 0,00"
     });
 
-    const {signOut, user} = useAuth();
+    
 
     function getLastTransaction( collection : DataListProps[]
                                , type: "income" | "outcome") : string{
+
+        if(collection.length == 0) return '';
+
         const typeTransactions = collection.filter(item => item.type === type);
 
         const maxTransaction = new Date(Math.max.apply(Math, typeTransactions.map( item => new Date(item.date).getTime())))

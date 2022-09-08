@@ -19,7 +19,6 @@ interface Props{
 
 export function CategorySelect({category, setCategory, closeSelectedCategory}: Props){
 
-    console.log(category);
     return (
         <Container>
             <Header>
