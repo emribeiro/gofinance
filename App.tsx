@@ -12,11 +12,10 @@ import { useFonts
 import AppLoading from 'expo-app-loading';
 
 import theme from './src/global/theme';
-import { NavigationContainer } from '@react-navigation/native';
-import { AppRoutes } from './src/routes/app.routes';
 import { StatusBar } from 'react-native';
 import { SignIn } from './src/pages/SignIn';
 import { AuthProvider } from './src/hooks/auth';
+import { Routes } from './src/routes';
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Poppins_400Regular
@@ -25,15 +24,13 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <NavigationContainer>
-        <StatusBar barStyle="light-content" />
-        { fontsLoaded ? 
-            // <AppRoutes /> 
-            <AuthProvider >
-              <SignIn />
-            </AuthProvider>
-          : <AppLoading />}
-      </NavigationContainer>
+      <StatusBar barStyle="light-content" />
+      { fontsLoaded ? 
+          // <AppRoutes /> 
+          <AuthProvider >
+            <Routes />
+          </AuthProvider>
+        : <AppLoading />}
     </ThemeProvider>
   );
 }

@@ -6,6 +6,7 @@ import { BalanceCard } from "../../Components/BalanceCard";
 import { Card } from "../../Components/Card";
 import { LoadIndicator } from "../../Components/LoadIndicator";
 import { TransactionItem, TransactionItemData } from "../../Components/TransactionItem";
+import { useAuth } from "../../hooks/auth";
 import { Container
        , Header
        , UserAvatar
@@ -52,6 +53,8 @@ export function Home(){
         },
         balance: "R$ 0,00"
     });
+
+    const {signOut, user} = useAuth();
 
     function getLastTransaction( collection : DataListProps[]
                                , type: "income" | "outcome") : string{
@@ -136,13 +139,13 @@ export function Home(){
                         <UserContainer>
                             <UserInfo>
                                 <UserAvatar 
-                                    source={{ uri: 'https://avatars.githubusercontent.com/u/18245701?s=40&v=4'}} />
+                                    source={{ uri: user.photo}} />
                                 <User>
                                     <UserGreeting>Olá,</UserGreeting>
-                                    <UserName>Eric</UserName>
+                                    <UserName>{user.name}</UserName>
                                 </User>
                             </UserInfo>
-                            <LogoutButton>
+                            <LogoutButton onPress={signOut}>
                                 <Icon name="log-out"/>
                             </LogoutButton>
                         </UserContainer>
