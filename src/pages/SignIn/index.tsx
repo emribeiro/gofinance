@@ -17,7 +17,7 @@ import GoogleSVG from '../../assets/svg/google.svg'
 import AppleSVG from '../../assets/svg/apple.svg'
 import { SignInButton } from "../../Components/SignInButton";
 import { useAuth } from "../../hooks/auth";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 
 export function SignIn(){
     const {signInWithGoogle, signInWithApple} = useAuth();
@@ -65,11 +65,16 @@ export function SignIn(){
                         svg={GoogleSVG}
                         onPress={handleSignInWithGoogle}
                     />
-                    <SignInButton 
-                        title="Entrar com Apple"
-                        svg={AppleSVG}
-                        onPress={handleSignInWithApple}
-                    />
+
+                    {
+                    
+                        Platform.OS === 'ios' &&
+                        <SignInButton 
+                            title="Entrar com Apple"
+                            svg={AppleSVG}
+                            onPress={handleSignInWithApple}
+                        />
+                    }
                 </SignInButtonContainer>
 
             </Footer>
